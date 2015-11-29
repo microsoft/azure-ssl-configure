@@ -14,5 +14,9 @@
     <Endpoints>
       <InputEndpoint name="Endpoint1" protocol="http" port="80" />
     </Endpoints>
+    <Startup>
+      <Task commandLine="Startup\SSLConfigure.cmd" executionContext="elevated" taskType="simple">
+      </Task>
+    </Startup>
   </WebRole>
 </ServiceDefinition>
