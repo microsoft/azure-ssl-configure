@@ -17,5 +17,11 @@ namespace WebRoleSample
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Application_EndRequest(Object sender, EventArgs e)
+        {
+            HttpContext context = HttpContext.Current;
+            context.Response.AddHeader("Strict-Transport-Security", "max-age=15724800;includeSubDomains");
+        }
     }
 }
