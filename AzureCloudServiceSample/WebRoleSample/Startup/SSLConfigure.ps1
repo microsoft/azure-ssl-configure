@@ -49,6 +49,8 @@ Function DisableRC4 {
     $k4 = $ciphers.CreateSubKey("RC4 40/128")
     $k4.SetValue("Enabled", 0, [Microsoft.Win32.RegistryValueKind]::DWord)
   }
+
+  $restart
 }
 
 Function Set-CryptoSetting {
@@ -79,6 +81,8 @@ Function Set-CryptoSetting {
       $restart = $True
     }
   }
+
+  $restart
 }
 
 # Check for existence of parent registry keys (SSL 2.0 and SSL 3.0), and create if they do not exist
@@ -100,12 +104,12 @@ $reboot = Set-CryptoSetting 13 DisabledByDefault 1 DWord $reboot
 # Ensure SSL 3.0 disabled for server
 $reboot = Set-CryptoSetting 14 Enabled 0 DWord $reboot
 
-DisableRC4($reboot)
+$reboot = DisableRC4($reboot)
 
 If ($SetCipherOrder) {
       If (!(Test-Path -Path $regkeys[15])) {
         New-Item $regkeys[15] | Out-Null
-        $restart = $True
+        $reboot = $True
       }
 
       $val = (Get-Item -Path $regkeys[15] -ErrorAction SilentlyContinue).GetValue("Functions", $null)
@@ -113,10 +117,9 @@ If ($SetCipherOrder) {
       if ($val -ne $cipherorder)
       {
         Set-ItemProperty -Path $regkeys[15] -Name Functions -Value $cipherorder
-        $restart = $True
+        $reboot = $True
       }
   }
-
 
 # If any settings were changed, reboot
 If ($reboot) {
