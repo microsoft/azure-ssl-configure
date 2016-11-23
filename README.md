@@ -1,5 +1,7 @@
-﻿# azure-ssl-configure
-This is a template project containing start up scripts to disable ssl 2.0, ssl3.0, configure recommended cipher suite order for your windows azure service, as well as disabling RC4 ciphers.
+# azure-ssl-configure
+This is a sample and template Azure Web Role project containing start up scripts to disable ssl 2.0, ssl3.0 and RC4 cipher suites, configure recommended cipher suite order for your windows azure service or any windows server to be securely service on TLS/SSL channels. This is highly important to protect the data-in-transit for users of Windows/Windows Azure, as nowadays the internet is pretty heavily militarized.
+
+Licensed under [MIT License](https://opensource.org/licenses/MIT)
 
 ####Updated for latest, -- 11/22/2016
 *NOTE: If you are on Windows 10 or above, you need to update the SSLConfigure.ps1 file a little bit on the cipher suite order. Look for comments in SSLConfigure.ps1 file, comment out the pre-windows 10 cipher suite order, and uncomment the Windows 10 cipher suite order string.*
