@@ -19,6 +19,11 @@ Add these lines to your ServiceDefinition.csdef file in your Azure project, plac
 ...
   <Startup>
     <Task commandLine="Startup\SSLConfigure.cmd" executionContext="elevated" taskType="simple">
+	    <Environment>
+          <Variable name="ComputeEmulatorRunning">
+            <RoleInstanceValue xpath="/RoleEnvironment/Deployment/@emulated" />
+          </Variable>
+        </Environment>
     </Task>
   </Startup>
 </WebRole>
