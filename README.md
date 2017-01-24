@@ -1,4 +1,5 @@
-# azure-ssl-configure
+ # azure-ssl-configure
+ 
 This is a sample and template Azure Web Role project containing start up scripts to disable ssl 2.0, ssl3.0 and RC4 cipher suites, configure recommended cipher suite order for your windows azure service or any windows server to be securely service on TLS/SSL channels. This is highly important to protect the data-in-transit for users of Windows/Windows Azure, as nowadays the internet is pretty heavily militarized.
 
 Licensed under [MIT License](https://opensource.org/licenses/MIT)
@@ -29,10 +30,13 @@ Add these lines to your ServiceDefinition.csdef file in your Azure project, plac
 </WebRole>
 ```
 #### Fourth, update the publish profile
-If you have an existing Azure Web Role deployed, **you have to update the publish profile to DeleteAndCreate**. The "AutomaticUpgrade" value **doesn't execute** the script in previous steps.
+If you have an existing Azure Web Role deployed, **you have to update the publish profile to DeleteAndCreate**. The "AutomaticUpgrade" value **doesn't execute** the script in previous steps. If you don't have existing deployment, you can ignore this step.
 
 Find your `<filename>.azurePubxml`, and make sure the AzureDeploymentReplacementMethod element is like the following, and also it is your discretion that whether this DeleteAndCreate manner fits into your business needs. 
-``<AzureDeploymentReplacementMethod>DeleteAndCreate</AzureDeploymentReplacementMethod>``
+
+```
+<AzureDeploymentReplacementMethod>DeleteAndCreate</AzureDeploymentReplacementMethod>
+```
 
 #### Publish your package and Done!
 
