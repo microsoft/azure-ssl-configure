@@ -1,9 +1,18 @@
 SET LOG_FILE="%TEMP%\StartupLog.txt"
+SET EXECUTE_PS1=0
 
-if "%ComputeEmulatorRunning%" == "false" (
+IF "%ComputeEmulatorRunning%" == "" (
+	SET EXECUTE_PS1=1
+)
+
+IF "%ComputeEmulatorRunning%" == "false" (
+	SET EXECUTE_PS1=1
+) 
+
+IF %EXECUTE_PS1% EQU 1 (
 	echo "Invoking SSLConfigure.ps1 on Azure service" >> %LOG_FILE% 2>&1	
 	PowerShell -ExecutionPolicy Unrestricted .\Startup\SSLConfigure.ps1 -sco  >> %LOG_FILE% 2>&1
-) else (
+) ELSE (
 	echo "Skipping SSLConfigure.ps1 invocation on emulated environment" >> %LOG_FILE% 2>&1	
 )    
 
