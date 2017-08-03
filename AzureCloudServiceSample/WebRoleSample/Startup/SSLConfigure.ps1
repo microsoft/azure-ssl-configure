@@ -106,7 +106,6 @@ If ([Environment]::OSVersion.Version.Major -lt 10) {
 # This is for Windows XP Embedded compatibility, remove to get securer if doesn't care.
 $cipherorder = $cipherorder + ",TLS_RSA_WITH_3DES_EDE_CBC_SHA"
 
-
 # If any settings are changed, this will change to $True and the server will reboot
 $reboot = $False
 
@@ -156,7 +155,7 @@ If ($SetCipherOrder) {
 # If any settings were changed, reboot
 If ($reboot) {
   Write-Host "Rebooting now..."
-  #shutdown.exe /r /t 5 /c "Crypto settings changed" /f /d p:2:4
+  shutdown.exe /r /t 5 /c "Crypto settings changed" /f /d p:2:4
 } Else {
   Write-Host "Nothing get updated."
 }
