@@ -135,7 +135,7 @@ If (!(Test-Path -Path $regkeys[0])) {
 	New-Item $regkeys[0] | Out-Null
 }
 
-# Ensure TLS 1.0 disabled for server
+# Ensure TLS 1.0 disabled for client
 $reboot = Set-CryptoSetting 1 Enabled 0 DWord $reboot
 
 # Ensure TLS 1.0 disabled for server
@@ -146,7 +146,7 @@ If (!(Test-Path -Path $regkeys[3])) {
     New-Item $regkeys[3] | Out-Null
 }
 
-# Ensure TLS 1.1 disabled for server
+# Ensure TLS 1.1 disabled for client
 $reboot = Set-CryptoSetting 4 Enabled 0 DWord $reboot
 
 # Ensure TLS 1.1 disabled for client
