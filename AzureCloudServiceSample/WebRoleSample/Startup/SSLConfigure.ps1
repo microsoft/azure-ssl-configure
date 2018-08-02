@@ -129,6 +129,29 @@ $reboot = Set-CryptoSetting 13 DisabledByDefault 1 DWord $reboot
 # Ensure SSL 3.0 disabled for server
 $reboot = Set-CryptoSetting 14 Enabled 0 DWord $reboot
 
+# Dont' disable 1.0 and 1.1 without testing your clients will be able connect to your service or not.
+# Ensure TLS 1.0 Key exists
+If (!(Test-Path -Path $regkeys[0])) {
+	New-Item $regkeys[0] | Out-Null
+}
+
+# Ensure TLS 1.0 disabled for server
+$reboot = Set-CryptoSetting 1 Enabled 0 DWord $reboot
+
+# Ensure TLS 1.0 disabled for server
+$reboot = Set-CryptoSetting 2 Enabled 0 DWord $reboot
+
+# Ensure TLS 1.1 Key exists
+If (!(Test-Path -Path $regkeys[3])) {
+    New-Item $regkeys[3] | Out-Null
+}
+
+# Ensure TLS 1.1 disabled for server
+$reboot = Set-CryptoSetting 4 Enabled 0 DWord $reboot
+
+# Ensure TLS 1.1 disabled for client
+$reboot = Set-CryptoSetting 5 Enabled 0 DWord $reboot
+
 If (Test-Path -Path $regkeys[8]) {
   # Ensure TLS 1.2 enabled for server for older version of windows if the settings has been changed
   $reboot = Set-CryptoSetting 8 Enabled 1 DWord $reboot
@@ -155,7 +178,7 @@ If ($SetCipherOrder) {
 # If any settings were changed, reboot
 If ($reboot) {
   Write-Host "Rebooting now..."
-  shutdown.exe /r /t 5 /c "Crypto settings changed" /f /d p:2:4
+  shutdown.exe /r /t 50 /c "Crypto settings changed" /f /d p:2:4
 } Else {
   Write-Host "Nothing get updated."
 }
