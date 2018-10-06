@@ -104,7 +104,7 @@ If ([Environment]::OSVersion.Version.Major -lt 10) {
 }
 
 # This is for Windows XP Embedded compatibility, remove to get securer if doesn't care.
-$cipherorder = $cipherorder + ",TLS_RSA_WITH_3DES_EDE_CBC_SHA"
+# $cipherorder = $cipherorder + ",TLS_RSA_WITH_3DES_EDE_CBC_SHA"
 
 # If any settings are changed, this will change to $True and the server will reboot
 $reboot = $False
@@ -129,28 +129,28 @@ $reboot = Set-CryptoSetting 13 DisabledByDefault 1 DWord $reboot
 # Ensure SSL 3.0 disabled for server
 $reboot = Set-CryptoSetting 14 Enabled 0 DWord $reboot
 
-# Dont' disable 1.0 and 1.1 without testing your clients will be able connect to your service or not.
+# DON'T DISABLE 1.0 and 1.1 without testing your clients will be able connect to your service/other dependencies or not.
 # Ensure TLS 1.0 Key exists
-If (!(Test-Path -Path $regkeys[0])) {
-	New-Item $regkeys[0] | Out-Null
-}
+#If (!(Test-Path -Path $regkeys[0])) {
+#	New-Item $regkeys[0] | Out-Null
+#}
 
 # Ensure TLS 1.0 disabled for client
-$reboot = Set-CryptoSetting 1 Enabled 0 DWord $reboot
+#$reboot = Set-CryptoSetting 1 Enabled 0 DWord $reboot
 
 # Ensure TLS 1.0 disabled for server
-$reboot = Set-CryptoSetting 2 Enabled 0 DWord $reboot
+#$reboot = Set-CryptoSetting 2 Enabled 0 DWord $reboot
 
 # Ensure TLS 1.1 Key exists
-If (!(Test-Path -Path $regkeys[3])) {
-    New-Item $regkeys[3] | Out-Null
-}
+#If (!(Test-Path -Path $regkeys[3])) {
+#    New-Item $regkeys[3] | Out-Null
+#}
 
 # Ensure TLS 1.1 disabled for client
-$reboot = Set-CryptoSetting 4 Enabled 0 DWord $reboot
+#$reboot = Set-CryptoSetting 4 Enabled 0 DWord $reboot
 
 # Ensure TLS 1.1 disabled for client
-$reboot = Set-CryptoSetting 5 Enabled 0 DWord $reboot
+#$reboot = Set-CryptoSetting 5 Enabled 0 DWord $reboot
 
 If (Test-Path -Path $regkeys[8]) {
   # Ensure TLS 1.2 enabled for server for older version of windows if the settings has been changed
