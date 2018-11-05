@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿# azure-ssl-configure
 =======
 # azure-ssl-configure
