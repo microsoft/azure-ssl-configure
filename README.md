@@ -8,7 +8,6 @@ This is a sample and template Azure Web Role project containing start up scripts
 Licensed under [MIT License](https://opensource.org/licenses/MIT)
 
 ####Updated to be compatible with Windows XP -- 1/24/2017
-*NOTE: If you are on Windows 10 or above, you need to update the SSLConfigure.ps1 file a little bit on the cipher suite order. Look for comments in SSLConfigure.ps1 file, comment out the pre-windows 10 cipher suite order, and uncomment the Windows 10 cipher suite order string. Most of the Azure VMs are not on Window 10. *
 
 ### How did it get created? 
 #### First, 
@@ -34,13 +33,7 @@ Add these lines to your ServiceDefinition.csdef file in your Azure project, plac
 </WebRole>
 ```
 #### Fourth, update the publish profile
-If you have an existing Azure Web Role deployed, **you have to update the publish profile to DeleteAndCreate**. The "AutomaticUpgrade" value **doesn't execute** the script in previous steps. If you don't have existing deployment, you can ignore this step.
-
-Find your `<filename>.azurePubxml`, and make sure the AzureDeploymentReplacementMethod element is like the following, and also it is your discretion that whether this DeleteAndCreate manner fits into your business needs. 
-
-```
-<AzureDeploymentReplacementMethod>DeleteAndCreate</AzureDeploymentReplacementMethod>
-```
+If you have an existing Azure Web Role deployed, the recommended AzureDeploymentReplacementMethod in your publish profile is "AutomaticUpgrade", instead of "DeleteAndCreate". If you don't have existing deployment, you can use DeleteAndCreate too.
 
 #### Publish your package and Done!
 
