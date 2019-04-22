@@ -79,6 +79,31 @@ $regkeys = @(
 )
 
 
+Function Set-Windows10PlusCurveOrder {
+    param ( $reboot)
+    $desiredOrder = "NistP384;NistP256".Split(";")
+    If ([Environment]::OSVersion.Version.Major -ge 10) {
+        If (!(Test-Path -Path $regkeys[15])) {
+            New-Item $regkeys[15] | Out-Null
+            $reboot = $True
+        }
+    
+        $val = (Get-Item -Path $regkeys[15] -ErrorAction SilentlyContinue).GetValue("EccCurves", $null)
+        
+        if( $val -eq $null) {
+            New-ItemProperty -Path $regkeys[15] -Name EccCurves -Value $desiredOrder -PropertyType MultiString | Out-Null
+            $reboot = $True
+        } else {
+            if ([System.String]::Join(';', $val) -ne [System.String]::Join(';', $desiredOrder)) {
+                Write-Host "The original curve order ", `n, $val, `n, "needs to be updated to ", $desiredOrder
+                Set-ItemProperty -Path $regkeys[15] -Name EccCurves -Value $desiredOrder
+                $reboot = $True
+            }
+        }
+    }
+    $reboot
+}
+
 If ([Environment]::OSVersion.Version.Major -lt 10) {
   # This is for Windows before 10 
   Write-Host "Configuring Windows before 10..."
@@ -129,7 +154,7 @@ $reboot = Set-CryptoSetting 13 DisabledByDefault 1 DWord $reboot
 # Ensure SSL 3.0 disabled for server
 $reboot = Set-CryptoSetting 14 Enabled 0 DWord $reboot
 
-# DON'T DISABLE 1.0 and 1.1 without testing your clients will be able connect to your service/other dependencies or not.
+# DON'T DISABLE 1.0 and 1.1 without testing whether your clients would be able connect to your service/other dependencies or not.
 # Ensure TLS 1.0 Key exists
 #If (!(Test-Path -Path $regkeys[0])) {
 #	New-Item $regkeys[0] | Out-Null
@@ -175,10 +200,17 @@ If ($SetCipherOrder) {
       }
   }
 
+
+$reboot = Set-Windows10PlusCurveOrder $reboot
+
 # If any settings were changed, reboot
 If ($reboot) {
-  Write-Host "Rebooting now..."
-  shutdown.exe /r /t 5 /c "Crypto settings changed" /f /d p:2:4
+  # Randomize the reboot timing since it could be run in a large cluster.
+  $tick = [System.Int32]([System.DateTime]::Now.Ticks % [System.Int32]::MaxValue)
+  $rand = [System.Random]::new($tick)
+  $sec = $rand.Next(30, 600)
+  Write-Host "Rebooting after", $sec, " second(s)..."
+  Write-Host  shutdown.exe /r /t $sec /c "Crypto settings changed" /f /d p:2:4
 } Else {
   Write-Host "Nothing get updated."
 }
