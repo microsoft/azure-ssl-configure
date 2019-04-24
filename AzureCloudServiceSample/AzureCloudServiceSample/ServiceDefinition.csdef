@@ -12,11 +12,19 @@
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
     </ConfigurationSettings>
     <Endpoints>
-      <InputEndpoint name="Endpoint2" protocol="https" port="443" />
+      <InputEndpoint name="Endpoint2" protocol="https" port="443" certificate="Certificate2" />
     </Endpoints>
     <Startup>
       <Task commandLine="Startup\SSLConfigure.cmd" executionContext="elevated" taskType="simple">
       </Task>
     </Startup>
+    <Certificates>
+      <Certificate name="Certificate1" storeLocation="LocalMachine" storeName="My" />
+      <Certificate name="Certificate2" storeLocation="LocalMachine" storeName="My" />
+    </Certificates>
+    <Imports>
+      <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
+    </Imports>
   </WebRole>
 </ServiceDefinition>
