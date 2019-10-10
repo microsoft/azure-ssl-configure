@@ -210,7 +210,7 @@ If ($reboot) {
   $rand = [System.Random]::new($tick)
   $sec = $rand.Next(30, 600)
   Write-Host "Rebooting after", $sec, " second(s)..."
-  Write-Host  shutdown.exe /r /t $sec /c "Crypto settings changed" /f /d p:2:4
+  shutdown.exe /r /t $sec /c "Crypto settings changed" /f /d p:2:4
 } Else {
   Write-Host "Nothing get updated."
 }
